@@ -1,0 +1,45 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from EmployeeBUServiceService WSDL service -->
+
+  <service name="EmployeeBUService" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://srvs.bu.imcs.com"/>
+      <parameter name="wsdlServiceElement" value="EmployeeBUServiceService"/>
+      <parameter name="schemaQualified" value="http://srvs.bu.imcs.com,http://dto.bu.imcs.com"/>
+      <parameter name="wsdlServicePort" value="EmployeeBUService"/>
+      <parameter name="className" value="com.imcs.bu.srvs.EmployeeBUServiceSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="EmployeeBUService"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="getEmployeeInfo" qname="operNS:getEmployeeInfo" xmlns:operNS="http://srvs.bu.imcs.com" returnQName="retNS:getEmployeeInfoReturn" xmlns:retNS="http://srvs.bu.imcs.com" returnType="rtns:EmployeeDTO" xmlns:rtns="http://dto.bu.imcs.com" soapAction="" >
+        <parameter qname="pns:empId" xmlns:pns="http://srvs.bu.imcs.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="addEmployeeInfo" qname="operNS:addEmployeeInfo" xmlns:operNS="http://srvs.bu.imcs.com" returnQName="retNS:addEmployeeInfoReturn" xmlns:retNS="http://srvs.bu.imcs.com" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:empId" xmlns:pns="http://srvs.bu.imcs.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:firstName" xmlns:pns="http://srvs.bu.imcs.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:lastName" xmlns:pns="http://srvs.bu.imcs.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:email" xmlns:pns="http://srvs.bu.imcs.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:phoneNumber" xmlns:pns="http://srvs.bu.imcs.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:jobId" xmlns:pns="http://srvs.bu.imcs.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="getEmployeeInfo addEmployeeInfo"/>
+
+      <typeMapping
+        xmlns:ns="http://dto.bu.imcs.com"
+        qname="ns:EmployeeDTO"
+        type="java:com.imcs.bu.dto.EmployeeDTO"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>
